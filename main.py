@@ -1,6 +1,7 @@
 import sys
 # Import the pure scraping function from our scrapers package
 from scrapers import search_animal
+from pprint import pprint
 
 def get_validated_input(prompt: str, valid_options: list) -> str:
     """A helper function to get validated user input."""
@@ -17,7 +18,7 @@ def get_validated_input(prompt: str, valid_options: list) -> str:
 
 def handle_animal_search():
     json_file = search_animal()
-    print(json_file)
+    pprint(json_file, sort_dicts=False)
     # """Guides the user through an animal search and displays results."""
     # print("\n--- Animal Search ---")
     
@@ -73,9 +74,11 @@ def main_menu():
         
         if choice == '1':
             handle_animal_search()
+            break
         elif choice.lower() == 'q':
             print("Exiting program. Goodbye!")
             sys.exit()
+            break
         else:
             print("Invalid choice, please try again.")
 

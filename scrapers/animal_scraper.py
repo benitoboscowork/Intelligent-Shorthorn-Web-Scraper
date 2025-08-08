@@ -13,12 +13,6 @@ import json
 from pprint import pprint
 
 def search_animal():
-    # opts = FirefoxOptions()
-    # opts = FirefoxOptions()
-    # opts.add_argument("--enable-javascript")
-    # opts.add_argument("--headless")
-    # # Initialize Chrome driver (will open a visible browser window)
-    # driver = webdriver.Firefox(options=opts)  # Make sure chromedriver is in your PATH
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
@@ -77,8 +71,6 @@ def search_animal():
             if choice_text:
                 bool_text = False
 
-
-        print("KELUAR!!")
         # Step 2: Select radio button with id "animal_search_sex1"
         sex_radio = wait.until(EC.element_to_be_clickable((By.ID, f"animal_search_sex{choice_sex}")))
         sex_radio.click()
@@ -115,13 +107,12 @@ def search_animal():
                 column_names = []
                 tr_temp = table.find_all('tr')[0]
                 text = tr_temp.get_text(separator=' ', strip=True)
-                print(f"This is for title: {text}")
+                print(f"{text}")
                 tr = table.find_all('tr')[1]
                 for i in range (4):
                     td = tr.find_all('td')[i].get_text(separator=' ', strip = True)
                     column_names.append(td)
                 data_rows = soup.select("tr[id^='tr_']")
-                results_list = []
                 data_as_lists = []
                 for row in data_rows:
                 # Find all table cells (td) in the current row
@@ -147,60 +138,6 @@ def search_animal():
                 "data": data_as_lists
             }
         return final_json_structure
-                        #data_rows = soup.select("tr[id^='tr_']")
-
-                        
-                    #else:
-                        #print("No <tr> found inside div with id 'dvSearchResults'.")
 
     except Exception as e:
         print("An error occurred:", e)
-
-
-# def search_animal(sex: str, field: str, value: str) -> pd.DataFrame:
-#     """
-#     Performs an animal search and returns the results as a DataFrame.
-#     This function contains only the scraping logic.
-#     """
-#     url = 'https://shorthorn.digitalbeef.com/index.php'
-    
-#     payload = {
-#         'sex': sex,
-#         'search_field': field,
-#         'search_value': value,
-#         'search_for_reg_no': 'Search for Reg No',
-#         'search': 'Y'
-#     }
-    
-#     headers = {
-#         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-#         'Referer': 'https://shorthorn.digitalbeef.com/index.php'
-#     }
-    
-#     print("\nSending request and searching for data... Please wait.")
-    
-#     try:
-#         response = requests.post(url, data=payload, headers=headers, timeout=20)
-#         response.raise_for_status()
-#     except requests.exceptions.RequestException as e:
-#         print(f"\nAn error occurred during the web request: {e}")
-#         return pd.DataFrame() # Return an empty DataFrame on error
-
-#     soup = BeautifulSoup(response.content, 'html.parser')
-#     results_table = soup.find('table', class_='table_color')
-    
-#     if not results_table:
-#         return pd.DataFrame()
-        
-#     headers = [th.get_text(strip=True) for th in results_table.find_all('th')]
-#     scraped_data = []
-    
-#     table_rows = results_table.find_all('tr')
-#     if len(table_rows) > 1:
-#         for row in table_rows[1:]:
-#             cells = row.find_all('td')
-#             if len(cells) == len(headers):
-#                 record = dict(zip(headers, [cell.get_text(strip=True) for cell in cells]))
-#                 scraped_data.append(record)
-            
-#     return pd.DataFrame(scraped_data)
