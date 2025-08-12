@@ -48,9 +48,11 @@ def wait_for_conditions(driver, timeout = TIMEOUT):
         page_source = driver.page_source
         soup = BeautifulSoup(page_source, 'html.parser')
         dv_search_results = soup.find('div', id='dvSearchResults')
-        if dv_search_results and dv_search_results.get_text(separator=' ', strip=True).lower() == "no results":
-            return 0
-
+        try:
+            if dv_search_results and dv_search_results.find('table').find_all('tr')[4].get_text(separator=' ', strip=True).lower() == "no matching records found":
+                return 0
+        except:
+            pass
         # Timeout check
         if time.time() - start_time > timeout:
             raise TimeoutError(f"Timeout of {timeout} seconds exceeded. Check your internet connections or find a better input filter")
